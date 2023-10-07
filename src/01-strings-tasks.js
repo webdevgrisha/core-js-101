@@ -124,10 +124,14 @@ function repeatString(value, count) {
  *   'ABABAB','BA' => 'ABAB'
  */
 function removeFirstOccurrences(str, value) {
-  const startPos = str.indexOf(value);
-  const endPos = startPos + value.length;
+  // first way
+  // const startPos = str.indexOf(value);
+  // const endPos = startPos + value.length;
 
-  return str.slice(0, startPos) + str.slice(endPos);
+  // return str.slice(0, startPos) + str.slice(endPos);
+
+  // seond way
+  return str.replace(new RegExp(value), '');
 }
 
 /**
@@ -142,7 +146,11 @@ function removeFirstOccurrences(str, value) {
  *   '<a>' => 'a'
  */
 function unbracketTag(str) {
-  return str.slice(1, str.length - 1);
+  // first way
+  // return str.slice(1, str.length - 1);
+
+  // second way
+  return str.replaceAll(/[<\\?>]/g, '');
 }
 
 /**
@@ -175,7 +183,10 @@ function convertToUpperCase(str) {
  *   'info@gmail.com' => ['info@gmail.com']
  */
 function extractEmails(str) {
-  return str.split(';');
+  // first way
+  // return str.split(';');
+  // second way
+  return str.match(/[.\w]+@\w+.com/g);
 }
 
 /**
@@ -229,28 +240,46 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-  const UPPER_ALFABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  const LOWWER_ALFABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  // first way
+  // const UPPER_ALFABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  // const LOWWER_ALFABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
-  const encodeWord = str.split('').map((letter) => {
-    let alfabet = null;
+  // const encodeWord = str.split('').map((letter) => {
+  //   let alfabet = null;
 
-    if (letter === letter.toUpperCase()) {
-      alfabet = UPPER_ALFABET;
+  //   if (letter === letter.toUpperCase()) {
+  //     alfabet = UPPER_ALFABET;
+  //   } else {
+  //     alfabet = LOWWER_ALFABET;
+  //   }
+
+  //   const letterIndex = alfabet.indexOf(letter);
+
+  //   if (letterIndex === -1) return letter;
+
+  //   const encodeLetterIndex = (letterIndex + 13) % 26;
+  //   const encodeLetter = alfabet[encodeLetterIndex];
+  //   return encodeLetter;
+  // });
+
+  // return encodeWord.join('');
+
+  // second way
+  return str.split('').map((letter) => {
+    if (!(/[a-zA-z]/).test(letter)) return letter;
+
+    const letterCode = letter.codePointAt(letter);
+    const isLetterUpper = letterCode <= 90;
+    let letterCodeInROT13 = letterCode + 13;
+
+    if (isLetterUpper) {
+      letterCodeInROT13 = letterCodeInROT13 > 90 ? letterCodeInROT13 - 26 : letterCodeInROT13;
     } else {
-      alfabet = LOWWER_ALFABET;
+      letterCodeInROT13 = letterCodeInROT13 > 122 ? letterCodeInROT13 - 26 : letterCodeInROT13;
     }
 
-    const letterIndex = alfabet.indexOf(letter);
-
-    if (letterIndex === -1) return letter;
-
-    const encodeLetterIndex = (letterIndex + 13) % 26;
-    const encodeLetter = alfabet[encodeLetterIndex];
-    return encodeLetter;
-  });
-
-  return encodeWord.join('');
+    return String.fromCodePoint(letterCodeInROT13);
+  }).join('');
 }
 
 /**

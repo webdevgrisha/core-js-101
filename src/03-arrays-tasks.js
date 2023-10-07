@@ -98,7 +98,7 @@ function getArrayOfStrings(arr) {
  *    [ false, 0, NaN, '', undefined ]   => [ ]
  */
 function removeFalsyValues(arr) {
-  return arr.filter((elem) => Boolean(elem));
+  return arr.filter(Boolean);
 }
 
 /**
@@ -195,12 +195,24 @@ function getTail(arr, n) {
  *    +'30,31,32,33,34'
  */
 function toCsvText(arr) {
-  return arr.reduce((str, curRow, index) => {
-    if (index === arr.length - 1) {
-      return `${str}${curRow.join(',')}`;
-    }
-    return `${str}${curRow.join(',')}\n`;
-  }, '');
+  // first way
+  // return arr.reduce((str, curRow, index) => {
+  //   const curRowStr = curRow.join(',');
+
+  //   if (index === arr.length - 1) {
+  //     return `${str}${curRowStr}`;
+  //   }
+
+  //   return `${str}${curRowStr}\n`;
+  // }, '');
+
+  // second way
+  return arr.map((arrStr, index, array) => {
+    const str = arrStr.join(',');
+    if (index === array.length - 1) return `${str}`;
+
+    return `${str}\n`;
+  }).join('');
 }
 
 /**
@@ -232,8 +244,23 @@ function toArrayOfSquares(arr) {
  *   [ 0, 0, 0, 0, 0]         => [ 0, 0, 0, 0, 0]
  *   [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] => [ 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 ]
  */
-function getMovingSum(/* arr */) {
-  throw new Error('Not implemented');
+function getMovingSum(arr) {
+  // first way
+  let currentSum = 0;
+
+  return arr.map((num) => {
+    currentSum += num;
+    return currentSum;
+  });
+
+  // second way
+  // let currentSum = 0;
+
+  // return arr.reduce((array, num) => {
+  //   currentSum += num;
+  //   array.push(currentSum);
+  //   return array;
+  // }, []);
 }
 
 /**
@@ -425,16 +452,12 @@ function toStringList(arr) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  // eslint-disable-next-line array-callback-return, consistent-return
-  // return arr.sort((countryA, countryB) => {
-  //   if (countryA.country > countryB.country) return 1;
-  //   if (countryA.country < countryB.country) return -1;
-  //   if (countryA.country === countryB.country) {
-  //     return (countryA.city > countryB.city);
-  //   }
-  // });
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  return arr.sort((countryA, countryB) => {
+    if (countryA.country > countryB.country) return 1;
+    if (countryA.country < countryB.country) return -1;
+    return countryA.city > countryB.city ? 1 : -1;
+  });
 }
 
 /**
@@ -477,8 +500,16 @@ function getIdentityMatrix(n) {
  *     0, 100 => [ 0, 1, 2, ..., 100 ]
  *     3, 3   => [ 3 ]
  */
-function getIntervalArray(/* start, end */) {
-  throw new Error('Not implemented');
+function getIntervalArray(start, end) {
+  const numCount = end - start + 1;
+  let currentNum = start;
+
+  const resultArray = new Array(numCount).fill(0).map(() => {
+    currentNum += 1;
+    return currentNum - 1;
+  });
+
+  return resultArray;
 }
 
 /**
@@ -527,8 +558,19 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  return array.reduce((mapObj, currentObj) => {
+    const country = keySelector(currentObj);
+    const city = valueSelector(currentObj);
+
+    if (mapObj.has(country)) {
+      mapObj.get(country).push(city);
+    } else {
+      mapObj.set(country, [city]);
+    }
+
+    return mapObj;
+  }, new Map());
 }
 
 /**
@@ -560,8 +602,8 @@ function selectMany(arr, childrenSelector) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  return indexes.reduce((currentArr, index) => currentArr[index], arr);
 }
 
 /**

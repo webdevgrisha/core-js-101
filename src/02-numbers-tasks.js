@@ -111,14 +111,13 @@ function getLinearEquationRoot(a, b) {
  *   (0,1) (0,1)     => 0
  *   (0,1) (1,2)     => 0
  */
-function getAngleBetweenVectors(/* x1, y1, x2, y2 */) {
-  // const vectorALength = Math.sqrt(x1 ** 2, y1 ** 2);
-  // const vectorBLength = Math.sqrt(x2 ** 2, y2 ** 2);
-  // const scalarMultiplication = x1 * x2 + y1 * y2;
-  // const cosValue = scalarMultiplication / (vectorALength * vectorBLength);
+function getAngleBetweenVectors(x1, y1, x2, y2) {
+  const vectorALength = Math.sqrt(x1 ** 2 + y1 ** 2);
+  const vectorBLength = Math.sqrt(x2 ** 2 + y2 ** 2);
+  const scalarMultiplication = x1 * x2 + y1 * y2;
+  const cosValue = scalarMultiplication / (vectorALength * vectorBLength);
 
-  // return cosValue;
-  throw new Error('Not implemented');
+  return Math.acos(cosValue);
 }
 
 /**
@@ -134,7 +133,11 @@ function getAngleBetweenVectors(/* x1, y1, x2, y2 */) {
  *     0     => 0
  */
 function getLastDigit(value) {
-  return +String(value).at(-1);
+  // first way
+  // return +String(value).at(-1);
+
+  // second way
+  return value % 10;
 }
 
 /**
@@ -149,7 +152,11 @@ function getLastDigit(value) {
  * '-525.5'     => -525.5
  */
 function parseNumberFromString(value) {
-  return +value;
+  // first way
+  // return +value;
+
+  // second way
+  return parseFloat(value);
 }
 
 /**
@@ -275,12 +282,16 @@ function isPrime(n) {
  *   toNumber(new Number(42), 0) => 42
  */
 function toNumber(value, def) {
-  if (typeof value === 'object') {
-    return value instanceof Number ? value : def;
-  }
+  // first way
+  // if (typeof value === 'object') {
+  //   return value instanceof Number ? value : def;
+  // }
 
-  // eslint-disable-next-line no-restricted-globals
-  return isNaN(+value) ? def : value;
+  // // eslint-disable-next-line no-restricted-globals
+  // return isNaN(+value) ? def : value;
+
+  // second way
+  return parseFloat(value) || def;
 }
 
 module.exports = {
