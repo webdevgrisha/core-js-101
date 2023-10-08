@@ -207,12 +207,7 @@ function toCsvText(arr) {
   // }, '');
 
   // second way
-  return arr.map((arrStr, index, array) => {
-    const str = arrStr.join(',');
-    if (index === array.length - 1) return `${str}`;
-
-    return `${str}\n`;
-  }).join('');
+  return arr.map((arrStr) => arrStr.join(',')).join('\n');
 }
 
 /**

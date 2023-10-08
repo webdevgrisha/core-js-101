@@ -300,16 +300,17 @@ function reverseString(str) {
  *   34143 => 34143
  */
 function reverseInteger(num) {
-  const stringNum = String(num);
-  let reverseStringNum = '';
+  const reverseNum = [];
+  let currentNum = num;
 
-  for (let i = stringNum.length - 1; i >= 0; i -= 1) {
-    reverseStringNum += stringNum[i];
+  while (currentNum !== 0) {
+    const remainder = currentNum % 10;
+    currentNum = Math.floor(currentNum / 10);
+
+    reverseNum.push(remainder);
   }
 
-  return +reverseStringNum;
-
-  // return +String(num).split('').reverse().join('');
+  return Number(reverseNum.join(''));
 }
 
 /**
@@ -434,7 +435,20 @@ function isBracketsBalanced(/* str */) {
  *    365, 10 => '365'
  */
 function toNaryString(num, n) {
-  return num.toString(n);
+  // first way
+  // return num.toString(n);
+
+  // second way
+  const coverNum = [];
+  let currentNum = num;
+
+  while (currentNum !== 0) {
+    const reminder = currentNum % n;
+    currentNum = Math.floor(currentNum / n);
+    coverNum.push(reminder);
+  }
+
+  return coverNum.reverse().join('');
 }
 
 /**
