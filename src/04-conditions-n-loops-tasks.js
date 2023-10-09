@@ -300,17 +300,18 @@ function reverseString(str) {
  *   34143 => 34143
  */
 function reverseInteger(num) {
-  const reverseNum = [];
+  let iterationNum = String(num).length - 1;
   let currentNum = num;
+  let sum = 0;
 
   while (currentNum !== 0) {
     const remainder = currentNum % 10;
     currentNum = Math.floor(currentNum / 10);
-
-    reverseNum.push(remainder);
+    sum += remainder * (10 ** iterationNum);
+    iterationNum -= 1;
   }
 
-  return Number(reverseNum.join(''));
+  return sum;
 }
 
 /**
@@ -439,16 +440,17 @@ function toNaryString(num, n) {
   // return num.toString(n);
 
   // second way
-  const coverNum = [];
+  let iterationNum = 0;
   let currentNum = num;
-
+  let sum = 0;
   while (currentNum !== 0) {
     const reminder = currentNum % n;
     currentNum = Math.floor(currentNum / n);
-    coverNum.push(reminder);
+    sum += reminder * (10 ** iterationNum);
+    iterationNum += 1;
   }
 
-  return coverNum.reverse().join('');
+  return String(sum);
 }
 
 /**
