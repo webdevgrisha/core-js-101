@@ -307,7 +307,7 @@ function reverseInteger(num) {
   while (currentNum !== 0) {
     const remainder = currentNum % 10;
     currentNum = Math.floor(currentNum / 10);
-    sum += remainder * (10 ** iterationNum);
+    sum += remainder * 10 ** iterationNum;
     iterationNum -= 1;
   }
 
@@ -446,7 +446,7 @@ function toNaryString(num, n) {
   while (currentNum !== 0) {
     const reminder = currentNum % n;
     currentNum = Math.floor(currentNum / n);
-    sum += reminder * (10 ** iterationNum);
+    sum += reminder * 10 ** iterationNum;
     iterationNum += 1;
   }
 
@@ -469,31 +469,22 @@ function getCommonDirectoryPath(pathes) {
   if (pathes.length === 0) return '';
 
   const firstLink = pathes[0];
-  const pathArr = firstLink.split('/').filter((path) => path !== '');
+  const pathArr = firstLink.split('/');
   let commonDirectoryPath = '';
   let checkResult = null;
 
-  if (firstLink[0] === '/') {
-    commonDirectoryPath += '/';
-
-    checkResult = pathes.every((path) => path.startsWith('/'));
-  } else {
-    const firstPath = pathArr[0];
-    commonDirectoryPath += firstPath;
-
-    checkResult = pathes.every((path) => path.startsWith(firstPath));
-  }
-
-  if (!checkResult) return '';
+  let startPos = 0;
 
   for (let i = 0; i < pathArr.length; i += 1) {
-    const checkPathFargment = commonDirectoryPath + pathArr[i] + (i === pathArr.length - 1 ? '' : '/');
+    const checkPathFargment = pathArr[i] + (i === pathArr.length - 1 ? '' : '/');
 
-    checkResult = pathes.every((path) => path.startsWith(checkPathFargment));
+    // eslint-disable-next-line no-loop-func, max-len
+    checkResult = pathes.every((path) => path.slice(startPos, startPos + checkPathFargment.length) === checkPathFargment);
 
     if (!checkResult) break;
 
-    commonDirectoryPath = checkPathFargment;
+    startPos += checkPathFargment.length;
+    commonDirectoryPath += checkPathFargment;
   }
 
   return commonDirectoryPath;
